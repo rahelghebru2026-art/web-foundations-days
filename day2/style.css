@@ -1,0 +1,69 @@
+* {
+    box-sizing: border-box;
+}
+
+header {
+    text-align: center;
+    padding: 20px;
+}
+
+nav {
+    display: flex;
+    justify-content: center;
+    gap: 16px;
+}
+
+nav a {
+    color: white;
+    text-decoration: none;
+}
+
+nav a:hover {
+    text-decoration: underline;
+}
+
+main {
+    max-width: 900px;
+    margin: 0 auto;
+}
+
+.features {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 16px;
+}
+
+table {
+    border-collapse: collapse;
+}
+
+th,
+td {
+    border: 1px solid black;
+    padding: 8px;
+}
+
+form {
+    display: flex;
+    flex-direction: column;
+}
+
+input,
+textarea {
+    width: 100%;
+    padding: 8px;
+}
+
+button {
+    transition: background-color 0.3s ease;
+}
+
+button:hover {
+    background-color: gray;
+}
+
+@media (max-width: 600px) {
+    nav {
+        flex-direction: column;
+    }
+}
