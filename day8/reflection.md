@@ -1,0 +1,10 @@
+# Course Reflection
+
+### What was the most difficult concept in the course, and how did you overcome it?
+The most challenging concept in this course was understanding system architecture trade-offs under heavy load—specifically balancing database consistency against high availability (the CAP theorem) during flash sales. Visualizing how distributed systems maintain state across caching layers (Redis) and relational databases without race conditions required a shift in mindset from simple single-user web applications to large-scale distributed computing. I overcame this by breaking down system execution into step-by-step request flows, sketching architecture diagrams, and calculating concrete metrics like peak read/write queries per second (QPS) to make abstract trade-offs tangible.
+
+### Which part of your capstone would you improve, based on the feedback you received?
+Based on feedback received on my QuickNotes system design capstone, I would improve the cache invalidation and database synchronization strategies. While my initial design utilized a Redis cache for fast reads, I relied on simple cache invalidations on updates. Implementing a more robust write-through caching pattern or utilizing asynchronous change data capture (CDC) via event streams would significantly reduce database strain and eliminate potential race conditions during high-concurrency write operations.
+
+### What will you learn next?
+Next, I plan to deepen my knowledge of backend infrastructure and cloud orchestration. Specifically, I intend to learn Docker containerization, Kubernetes for automated service scaling, and advanced distributed messaging systems like Apache Kafka. Mastering these tools will allow me to turn these architectural design documents into production-ready microservices capable of serving millions of concurrent users reliably.
