@@ -153,7 +153,7 @@ TicketHub uses HTTPS and JSON. Customers must authenticate before accessing priv
 
 **Request**
 
-`GET /api/events?page=1&date=2027-05-20`
+'GET /api/events?page=1&date=2027-05-20'
 
 **Purpose**
 
@@ -161,7 +161,7 @@ Returns published events with pagination and optional filters.
 
 **Example response**
 
-```json
+
 {
   "events": [
     {
@@ -174,13 +174,13 @@ Returns published events with pagination and optional filters.
   "page": 1,
   "totalPages": 5
 }
-```
+
 
 ### 3.2 View Event Seats
 
 **Request**
 
-`GET /api/events/101/seats`
+'GET /api/events/101/seats'
 
 **Purpose**
 
@@ -188,7 +188,7 @@ Returns the seat map and the latest known seat status for an event.
 
 **Example response**
 
-```json
+
 {
   "eventId": 101,
   "seats": [
@@ -206,7 +206,6 @@ Returns the seat map and the latest known seat status for an event.
     }
   ]
 }
-```
 
 Cached seat information is for display purposes only. The reservation endpoint must verify availability against the authoritative database.
 
@@ -214,16 +213,15 @@ Cached seat information is for display purposes only. The reservation endpoint m
 
 **Request**
 
-`POST /api/events/101/holds`
+'POST /api/events/101/holds'
 
 **Example request body**
 
-```json
+
 {
   "seatIds": [501, 502],
   "idempotencyKey": "hold-request-abc123"
 }
-```
 
 **Purpose**
 
@@ -233,7 +231,7 @@ A successful hold expires after a defined period, such as five minutes.
 
 **Example response**
 
-```json
+
 {
   "holdId": "hold-9001",
   "eventId": 101,
@@ -241,7 +239,7 @@ A successful hold expires after a defined period, such as five minutes.
   "status": "held",
   "expiresAt": "2027-05-20T12:05:00Z"
 }
-```
+
 
 If another customer has already reserved a requested seat, the server returns `409 Conflict`.
 
@@ -249,17 +247,17 @@ If another customer has already reserved a requested seat, the server returns `4
 
 **Request**
 
-`POST /api/orders`
+'POST /api/orders'
 
 **Example request body**
 
-```json
+
 {
   "holdId": "hold-9001",
   "paymentMethodToken": "provider-token-xyz",
   "idempotencyKey": "order-request-abc123"
 }
-```
+
 
 **Purpose**
 
@@ -269,14 +267,14 @@ The order is confirmed only after successful payment has been verified and the s
 
 **Example response**
 
-```json
+
 {
   "orderId": 7001,
   "status": "confirmed",
   "totalAmount": 100.00,
   "currency": "USD"
 }
-```
+
 
 If payment is still processing, the server should return a pending status instead of claiming that the order is confirmed.
 
@@ -284,7 +282,7 @@ If payment is still processing, the server should return a pending status instea
 
 **Request**
 
-`GET /api/me/tickets`
+'GET /api/me/tickets'
 
 **Purpose**
 
@@ -292,7 +290,7 @@ Returns the authenticated customer's purchased tickets.
 
 **Example response**
 
-```json
+
 {
   "tickets": [
     {
@@ -304,7 +302,7 @@ Returns the authenticated customer's purchased tickets.
     }
   ]
 }
-```
+
 
 The server must verify the customer's identity and ticket ownership.
 
@@ -312,7 +310,7 @@ The server must verify the customer's identity and ticket ownership.
 
 **Request**
 
-`GET /api/orders/7001`
+'GET /api/orders/7001'
 
 **Purpose**
 
@@ -324,7 +322,7 @@ Only the order owner or an authorized administrator may access the order.
 
 **Request**
 
-`POST /api/orders/7001/cancel`
+'POST /api/orders/7001/cancel'
 
 **Purpose**
 
@@ -375,7 +373,7 @@ The design includes six tables:
 
 ### 4.3 SQL Schema
 
-```sql
+
 CREATE TABLE users (
     id BIGSERIAL PRIMARY KEY,
     email VARCHAR(255) NOT NULL UNIQUE,
@@ -430,7 +428,7 @@ CREATE TABLE seat_holds (
     created_at TIMESTAMPTZ NOT NULL DEFAULT NOW(),
     CHECK (status IN ('active', 'converted', 'expired', 'cancelled'))
 );
-```
+
 
 ### 4.4 Preventing Double-Booking
 
@@ -466,7 +464,7 @@ After payment is successfully verified, the application confirms the order, chan
 
 A background worker identifies expired holds and releases seats that have not been sold or converted into valid orders.
 
-The `UNIQUE (seat_id)` constraint in `order_items` provides an additional safeguard against assigning the same seat to two orders.
+The 'UNIQUE (seat_id)' constraint in 'order_items' provides an additional safeguard against assigning the same seat to two orders.
 
 **Important:** A database transaction cannot atomically include an external payment provider. TicketHub must handle delayed payment responses, retries, duplicate notifications, and payment timeouts using idempotency keys and a clearly defined payment state machine.
 
@@ -476,7 +474,6 @@ The application must not confirm a seat for two customers while waiting for paym
 
 ### 5.1 Architecture Diagram
 
-```text
                           Customers
                               |
                               v
@@ -509,7 +506,6 @@ The application must not confirm a seat for two customers while waiting for paym
                          Read Replica          |
                                                v
                                         Payment Provider
-```
 
 ### 5.2 Explanation of Each Component
 
